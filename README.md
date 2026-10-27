@@ -549,6 +549,6 @@ aicte-complaint-dashboard/
 ---
 
 <p align="center">
-  Built for <strong>Smart India Hackathon 2024</strong> · Problem Statement 26264<br/>
+  Built for <strong>Smart India Hackathon 2026</strong> · Problem Statement 26264<br/>
   © All India Council for Technical Education
 </p>
