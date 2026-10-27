@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AICTE Dashboard — Documentation</title>
+  <style>
+    :root {
+      --primary: #3f51b5;
+      --primary-dark: #283593;
+      --accent: #ff9800;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --code-bg: #1e2235;
+      --tag-green: #dcfce7; --tag-green-text: #166534;
+      --tag-blue:  #dbeafe; --tag-blue-text:  #1e40af;
+      --tag-amber: #fef3c7; --tag-amber-text: #92400e;
+      --tag-red:   #fee2e2; --tag-red-text:   #991b1b;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: var(--bg); }
+
+    /* ── Header ── */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 0;
+    }
+    .header-banner {
+      background: var(--accent);
+      text-align: center;
+      padding: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+    }
+    .header-inner img { height: 56px; width: 56px; object-fit: contain; }
+    .header-text h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+    .header-text p  { margin: 2px 0 0; font-size: 0.8rem; opacity: 0.85; }
+    .header-links { margin-left: auto; display: flex; gap: 12px; }
+    .header-links a {
+      color: white; text-decoration: none; font-size: 0.82rem;
+      background: rgba(255,255,255,0.15); border-radius: 6px; padding: 5px 12px;
+    }
+    .header-links a:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── Layout ── */
+    .layout { display: flex; max-width: 1200px; margin: 0 auto; padding: 24px 16px; gap: 24px; }
+
+    /* ── Sidebar ── */
+    nav.sidebar {
+      width: 220px; flex-shrink: 0; position: sticky; top: 16px;
+      height: fit-content; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; font-size: 0.83rem;
+    }
+    nav.sidebar h3 { margin: 0 0 12px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    nav.sidebar ul { list-style: none; margin: 0; padding: 0; }
+    nav.sidebar li + li { margin-top: 2px; }
+    nav.sidebar a {
+      display: block; padding: 5px 8px; border-radius: 6px;
+      color: var(--text); text-decoration: none;
+    }
+    nav.sidebar a:hover { background: var(--bg); color: var(--primary); }
+    nav.sidebar .section-title { font-weight: 600; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 4px 8px; }
+
+    /* ── Content ── */
+    main { flex: 1; min-width: 0; }
+    section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 20px; }
+    h2 { margin: 0 0 16px; font-size: 1.35rem; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+    h2 .icon { font-size: 1.3rem; }
+    h3 { font-size: 1rem; color: var(--text); margin: 20px 0 8px; }
+    p { line-height: 1.65; color: #374151; margin: 8px 0; }
+    a { color: var(--primary); }
+
+    /* ── Hero ── */
+    .hero { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); color: white; border-radius: 12px; padding: 36px 40px; margin-bottom: 20px; }
+    .hero h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    .hero p { margin: 0 0 20px; opacity: 0.9; font-size: 0.95rem; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+    .btn { padding: 9px 20px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+    .btn-white { background: white; color: var(--primary); }
+    .btn-outline { border: 2px solid rgba(255,255,255,0.7); color: white; }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th { background: var(--bg); padding: 9px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 2px solid var(--border); }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f9fafb; }
+
+    /* ── Code ── */
+    pre { background: var(--code-bg); color: #e2e8f0; border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.82rem; line-height: 1.6; margin: 12px 0; }
+    code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    .inline-code { background: #f1f5f9; color: #be123c; padding: 1px 5px; border-radius: 4px; font-size: 0.82rem; font-family: monospace; }
+
+    /* ── Tags ── */
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
+    .tag-green  { background: var(--tag-green);  color: var(--tag-green-text); }
+    .tag-blue   { background: var(--tag-blue);   color: var(--tag-blue-text); }
+    .tag-amber  { background: var(--tag-amber);  color: var(--tag-amber-text); }
+    .tag-red    { background: var(--tag-red);    color: var(--tag-red-text); }
+
+    /* ── Pipeline diagram ── */
+    .pipeline { display: flex; gap: 0; align-items: stretch; margin: 20px 0; }
+    .stage { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 0; padding: 14px 16px; }
+    .stage:first-child { border-radius: 10px 0 0 10px; }
+    .stage:last-child  { border-radius: 0 10px 10px 0; }
+    .stage-num { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary); }
+    .stage-title { font-weight: 700; font-size: 0.9rem; margin: 4px 0; }
+    .stage-desc { font-size: 0.78rem; color: var(--muted); }
+    .arrow { display: flex; align-items: center; padding: 0 4px; color: var(--muted); font-size: 1.2rem; }
+
+    /* ── Cards grid ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 16px 0; }
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .card-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+    .card-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── Role table ── */
+    .role-chip { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; background: var(--tag-blue); color: var(--tag-blue-text); }
+
+    /* ── Footer ── */
+    footer { text-align: center; padding: 32px 16px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 8px; }
+
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      nav.sidebar { width: 100%; position: static; }
+      .pipeline { flex-direction: column; }
+      .stage { border-radius: 8px !important; }
+      .arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-banner">Government of India &nbsp;|&nbsp; Ministry of Education &nbsp;|&nbsp; All India Council for Technical Education</div>
+  <div class="header-inner">
+    <img src="/logo.png" alt="AICTE Logo" />
+    <div class="header-text">
+      <h1>अखिल भारतीय तकनीकी शिक्षा परिषद् — AICTE</h1>
+      <p>Integrated Institution Complaint Monitoring Dashboard · Documentation</p>
+    </div>
+    <div class="header-links">
+      <a href="/">← App</a>
+      <a href="/api/docs" target="_blank">API Docs</a>
+      <a href="https://github.com" target="_blank">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h3>Contents</h3>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#features">Key Features</a></li>
+      <li><a href="#quickstart">Quick Start</a></li>
+      <div class="section-title">AI Features</div>
+      <li><a href="#overlap">Overlap Detection</a></li>
+      <li><a href="#twin">Institution Twin</a></li>
+      <li><a href="#conflict">Conflict Prevention</a></li>
+      <div class="section-title">Reference</div>
+      <li><a href="#accounts">Demo Accounts</a></li>
+      <li><a href="#api">API Reference</a></li>
+      <li><a href="#config">Configuration</a></li>
+      <li><a href="#deployment">Deployment</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>AICTE Complaint Dashboard</h1>
+      <p>Smart India Hackathon 2024 · Problem Statement 26264 — Integrated Dashboard for Monitoring and Tracking Institution-Related Complaint Cases Across AICTE Bureaus/Cells</p>
+      <div class="hero-badges">
+        <span class="badge">Python 3.12</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">React 18</span>
+        <span class="badge">SQLAlchemy 2</span>
+        <span class="badge">RapidFuzz</span>
+        <span class="badge">Sentence Transformers</span>
+        <span class="badge">React Flow</span>
+      </div>
+      <div class="btn-group">
+        <a href="/" class="btn btn-white">Open App</a>
+        <a href="/api/docs" class="btn btn-outline" target="_blank">Swagger API</a>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2><span class="icon">📋</span> Overview</h2>
+      <p>The AICTE Integrated Complaint Monitoring Dashboard centralises institution-related complaints and regulatory cases across AICTE's Regulation Bureau (RB), Public Grievance Redressal Cell (PGRC), regional offices, and authorised Bureaus/Cells.</p>
+      <h3>Problem Being Solved</h3>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🔀</div>
+          <div class="card-title">Fragmented Case Management</div>
+          <div class="card-desc">Different bureaus maintain separate case records for the same institution — no unified view exists.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Duplicate Effort</div>
+          <div class="card-desc">Multiple officers unknowingly work on overlapping complaints about the same institution.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⏰</div>
+          <div class="card-title">Missed Deadlines</div>
+          <div class="card-desc">No centralised SLA tracking means cases get stuck without escalation.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">Coordination Gaps</div>
+          <div class="card-desc">Bureaus can take conflicting actions on related cases without knowing it.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+      <h2><span class="icon">✨</span> Key Features</h2>
+      <table>
+        <thead><tr><th>Feature</th><th>Description</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Unified Complaint Intake</strong></td><td>Portal, email, letter, RTI, court orders, walk-in</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Case Lifecycle Management</strong></td><td>Received → Pending → Under Process → Disposed/Closed</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>SLA Monitoring</strong></td><td>Configurable deadlines with escalation reminders</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Role-Based Access Control</strong></td><td>6 roles — Admin, RB, PGRC, Bureau Officer, Regional, Management</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>AI Overlap Detection</strong></td><td>3-stage explainable pipeline: Exact ID → Fuzzy → Semantic</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Institution Digital Twin</strong></td><td>360° profile with React Flow relationship graph</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Cross-Bureau Conflict Prevention</strong></td><td>Rule-based coordination issue detection</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Smart Dashboard</strong></td><td>12 live KPI cards, 5 charts — all from real DB queries</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>4,634 Real Institutions</strong></td><td>Imported from official AICTE PDF with state/district/city</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>CSV/JSON Reports</strong></td><td>Institution, ageing, workload, overlap reports</td><td><span class="tag tag-green">Live</span></td></tr>
+          <tr><td><strong>Semantic AI Matching</strong></td><td>Sentence Transformers cosine similarity</td><td><span class="tag tag-amber">Optional</span></td></tr>
+          <tr><td><strong>Email Notifications</strong></td><td>SMTP-based deadline and assignment emails</td><td><span class="tag tag-amber">Config req.</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quickstart">
+      <h2><span class="icon">🚀</span> Quick Start</h2>
+      <h3>Windows — One Click</h3>
+      <p>Double-click <code class="inline-code">run.bat</code> in the project root. It kills old processes, starts both servers, and opens the browser.</p>
+
+      <h3>Manual Setup (conda)</h3>
+      <pre><code># 1. Create environment
+conda create -n ps2 python=3.12 -y
+conda activate ps2
+
+# 2. Install backend
+cd backend
+pip install -r requirements.txt "pydantic[email]"
+
+# 3. Configure
+cp ../.env.example ../.env   # then edit .env
+
+# 4. Migrate + seed
+python -m alembic upgrade head
+python -m app.db.seed
+
+# 5. Start backend
+python -m uvicorn app.main:app --port 8000 --reload</code></pre>
+
+      <pre><code># Frontend (separate terminal)
+cd frontend
+npm install
+npm run dev
+# → http://localhost:5173</code></pre>
+
+      <h3>Docker</h3>
+      <pre><code>docker compose up -d
+docker compose exec backend python -m app.db.seed</code></pre>
+    </section>
+
+    <!-- AI Overlap Detection -->
+    <section id="overlap">
+      <h2><span class="icon">🤖</span> Explainable AI Overlap Detection</h2>
+      <p>The system finds potentially related cases across different bureaus using a 3-stage explainable pipeline. Every alert includes human-readable reasons — never a black-box score.</p>
+
+      <div class="pipeline">
+        <div class="stage">
+          <div class="stage-num">Stage 1</div>
+          <div class="stage-title">Candidate Discovery</div>
+          <div class="stage-desc">Finds active cases sharing an institution via exact ID → Permanent ID → fuzzy name</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stage">
+          <div class="stage-num">Stage 2</div>
+          <div class="stage-title">Triple Scoring</div>
+          <div class="stage-desc">Institution similarity + Lexical text overlap + Semantic cosine similarity</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stage">
+          <div class="stage-num">Stage 3</div>
+          <div class="stage-title">Explainability</div>
+          <div class="stage-desc">Plain-English reasons, all scores, detection method, review workflow</div>
+        </div>
+      </div>
+
+      <h3>Scoring Formula</h3>
+      <pre><code>combined_score = 0.60 × institution_score + 0.40 × text_score
+
+# If semantic matching is enabled:
+text_score = 0.40 × lexical_score + 0.60 × semantic_score
+
+# Thresholds (configurable via .env):
+institution_name_threshold = 80.0%
+complaint_similarity_threshold = 70.0%</code></pre>
+
+      <h3>Match Reasons (examples)</h3>
+      <table>
+        <thead><tr><th>Trigger</th><th>Human-Readable Reason</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag tag-blue">exact_id</span></td><td>"Exact institution match: both cases share the same AICTE Permanent ID."</td></tr>
+          <tr><td><span class="tag tag-amber">fuzzy_name</span></td><td>"Institution name fuzzy match: similarity 88.5% (threshold 80.0%)."</td></tr>
+          <tr><td><span class="tag tag-green">complaint_text</span></td><td>"Complaint text similarity: 76.2% lexical overlap (threshold 70.0%)."</td></tr>
+          <tr><td><span class="tag tag-red">semantic</span></td><td>"Semantic similarity: 83.1% via sentence embeddings."</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Review Workflow</h3>
+      <p>Authorized officials can: <strong>Confirm Related</strong> · <strong>False Positive</strong> · <strong>Needs Investigation</strong> · Add coordination remarks. The system <em>never</em> auto-merges cases — every decision requires human review.</p>
+
+      <h3>Enable Semantic AI</h3>
+      <pre><code># .env
+ENABLE_SEMANTIC_MATCHING=true
+SEMANTIC_MODEL_NAME=all-MiniLM-L6-v2   # ~90 MB download on first use</code></pre>
+    </section>
+
+    <!-- Institution Digital Twin -->
+    <section id="twin">
+      <h2><span class="icon">🏛️</span> Institution Digital Twin</h2>
+      <p>Each institution has a unified 360° profile at <code class="inline-code">/institutions/{id}</code> consolidating data from all bureaus.</p>
+      <table>
+        <thead><tr><th>Section</th><th>What It Shows</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Identity</strong></td><td>Name, AICTE Permanent ID, address, state, district, city</td></tr>
+          <tr><td><strong>Case Statistics</strong></td><td>Total / active / overdue / pending / disposed counts</td></tr>
+          <tr><td><strong>Overlap Alerts</strong></td><td>Unresolved alerts involving this institution</td></tr>
+          <tr><td><strong>Case History</strong></td><td>Chronological all-bureau case timeline</td></tr>
+          <tr><td><strong>Relationship Graph</strong></td><td>Interactive React Flow diagram: institution → cases → bureaus → overlaps</td></tr>
+          <tr><td><strong>API endpoint</strong></td><td><code class="inline-code">GET /api/v1/institutions/{id}/profile</code> and <code class="inline-code">/graph</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Conflict Prevention -->
+    <section id="conflict">
+      <h2><span class="icon">⚠️</span> Cross-Bureau Conflict Prevention</h2>
+      <p>A separate rule-based engine (distinct from overlap detection) identifies coordination issues between bureaus handling the same institution.</p>
+      <table>
+        <thead><tr><th>Rule</th><th>Triggers When</th><th>Severity</th></tr></thead>
+        <tbody>
+          <tr><td><code class="inline-code">multi_bureau_same_issue</code></td><td>Multiple bureaus have active cases on the same institution + related category</td><td><span class="tag tag-red">High</span></td></tr>
+          <tr><td><code class="inline-code">competing_deadlines</code></td><td>Related cases have deadlines within 7 days of each other</td><td><span class="tag tag-amber">Medium</span></td></tr>
+          <tr><td><code class="inline-code">parallel_escalation</code></td><td>One case is escalated while a related case elsewhere is under process</td><td><span class="tag tag-red">High</span></td></tr>
+          <tr><td><code class="inline-code">transfer_conflict</code></td><td>A case was transferred while a related case remains active in another bureau</td><td><span class="tag tag-amber">Medium</span></td></tr>
+        </tbody>
+      </table>
+      <pre><code>POST /api/v1/conflicts/scan          # Run conflict detection
+GET  /api/v1/conflicts               # List all warnings
+GET  /api/v1/conflicts/{id}          # Warning detail
+POST /api/v1/conflicts/{id}/review   # Acknowledge / resolve</code></pre>
+    </section>
+
+    <!-- Demo Accounts -->
+    <section id="accounts">
+      <h2><span class="icon">👥</span> Demo Accounts</h2>
+      <p>All demo passwords: <code class="inline-code">Demo@1234</code></p>
+      <table>
+        <thead><tr><th>Email</th><th>Role</th><th>Access</th></tr></thead>
+        <tbody>
+          <tr><td><code class="inline-code">admin@aicte.gov.in</code></td><td><span class="role-chip">System Admin</span></td><td>Full access — all bureaus, all data</td></tr>
+          <tr><td><code class="inline-code">rb.officer@aicte.gov.in</code></td><td><span class="role-chip">RB Officer</span></td><td>Regulation Bureau cases</td></tr>
+          <tr><td><code class="inline-code">pgrc.officer@aicte.gov.in</code></td><td><span class="role-chip">PGRC Officer</span></td><td>PGRC Cell cases</td></tr>
+          <tr><td><code class="inline-code">ab.officer@aicte.gov.in</code></td><td><span class="role-chip">Bureau Officer</span></td><td>Approval Bureau cases</td></tr>
+          <tr><td><code class="inline-code">north.regional@aicte.gov.in</code></td><td><span class="role-chip">Regional Officer</span></td><td>Northern Region</td></tr>
+          <tr><td><code class="inline-code">management@aicte.gov.in</code></td><td><span class="role-chip">Sr. Management</span></td><td>Read-only across all</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- API Reference -->
+    <section id="api">
+      <h2><span class="icon">🔌</span> API Reference</h2>
+      <p>Full interactive docs: <a href="/api/docs" target="_blank">http://localhost:8000/api/docs</a> (Swagger UI)</p>
+      <h3>Authentication</h3>
+      <pre><code>POST /api/v1/auth/login              # → {access_token, refresh_token}
+GET  /api/v1/auth/me                 # Current user
+POST /api/v1/auth/refresh            # Refresh token
+POST /api/v1/auth/change-password</code></pre>
+
+      <h3>Institutions</h3>
+      <pre><code>GET    /api/v1/institutions                    # List with ?name=&state=&type=
+POST   /api/v1/institutions                    # Create
+GET    /api/v1/institutions/{id}/profile       # Digital Twin profile
+GET    /api/v1/institutions/{id}/graph         # Relationship graph
+GET    /api/v1/institutions/{id}/cases         # All cases</code></pre>
+
+      <h3>Cases</h3>
+      <pre><code>GET    /api/v1/cases                           # List
+PATCH  /api/v1/cases/{id}/status               # {new_status, remarks}
+POST   /api/v1/cases/{id}/assign               # {officer_id, notes}
+POST   /api/v1/cases/{id}/transfer             # {bureau_id, reason}
+POST   /api/v1/cases/{id}/actions              # Add remark/action
+GET    /api/v1/cases/{id}/history              # Full audit history</code></pre>
+
+      <h3>AI Overlap Detection</h3>
+      <pre><code>GET    /api/v1/overlaps                        # List alerts
+GET    /api/v1/overlaps/{id}                   # Detail + explanation
+POST   /api/v1/overlaps/{id}/review            # Submit decision
+GET    /api/v1/overlaps/{id}/history           # Review history
+POST   /api/v1/overlaps/run-check/{case_id}    # Trigger check</code></pre>
+
+      <h3>Conflict Prevention</h3>
+      <pre><code>GET    /api/v1/conflicts                       # List warnings
+POST   /api/v1/conflicts/scan                  # Run detection
+POST   /api/v1/conflicts/{id}/review           # Acknowledge/resolve</code></pre>
+
+      <h3>Dashboard</h3>
+      <pre><code>GET    /api/v1/dashboard/summary               # 12 KPI metrics
+GET    /api/v1/dashboard/trends                # Monthly intake/disposal
+GET    /api/v1/dashboard/workload              # Bureau workload
+GET    /api/v1/dashboard/institution-table     # Institution stats
+GET    /api/v1/dashboard/ageing               # Ageing buckets</code></pre>
+    </section>
+
+    <!-- Configuration -->
+    <section id="config">
+      <h2><span class="icon">⚙️</span> Configuration Reference</h2>
+      <table>
+        <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code class="inline-code">DATABASE_URL</code></td><td><code class="inline-code">sqlite:///./aicte_dev.db</code></td><td>DB connection — use PostgreSQL in production</td></tr>
+          <tr><td><code class="inline-code">SECRET_KEY</code></td><td><em>dev placeholder</em></td><td>JWT signing key — <strong>must change</strong> in production</td></tr>
+          <tr><td><code class="inline-code">ACCESS_TOKEN_EXPIRE_MINUTES</code></td><td><code class="inline-code">480</code></td><td>Access token lifetime (8 h)</td></tr>
+          <tr><td><code class="inline-code">ENABLE_SEMANTIC_MATCHING</code></td><td><code class="inline-code">false</code></td><td>Enable sentence-transformers AI</td></tr>
+          <tr><td><code class="inline-code">SEMANTIC_MODEL_NAME</code></td><td><code class="inline-code">all-MiniLM-L6-v2</code></td><td>HuggingFace model name</td></tr>
+          <tr><td><code class="inline-code">INSTITUTION_NAME_THRESHOLD</code></td><td><code class="inline-code">80.0</code></td><td>Fuzzy name match threshold (%)</td></tr>
+          <tr><td><code class="inline-code">COMPLAINT_SIMILARITY_THRESHOLD</code></td><td><code class="inline-code">70.0</code></td><td>Text similarity threshold (%)</td></tr>
+          <tr><td><code class="inline-code">USE_LOCAL_STORAGE</code></td><td><code class="inline-code">true</code></td><td>Local file uploads (dev)</td></tr>
+          <tr><td><code class="inline-code">AZURE_STORAGE_CONNECTION_STRING</code></td><td><em>empty</em></td><td>Azure Blob Storage connection</td></tr>
+          <tr><td><code class="inline-code">SMTP_HOST</code></td><td><em>empty</em></td><td>Email server (leave empty to disable)</td></tr>
+          <tr><td><code class="inline-code">ENVIRONMENT</code></td><td><code class="inline-code">development</code></td><td><code class="inline-code">development</code> or <code class="inline-code">production</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Deployment -->
+    <section id="deployment">
+      <h2><span class="icon">☁️</span> Production Deployment</h2>
+      <h3>Azure App Service</h3>
+      <pre><code># Required environment variables in App Service
+DATABASE_URL=postgresql://...@....postgres.database.azure.com/aicte_db?sslmode=require
+SECRET_KEY=&lt;64-char random string&gt;
+AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;...
+ENVIRONMENT=production
+USE_LOCAL_STORAGE=false
+
+# Post-deploy steps
+python -m alembic upgrade head</code></pre>
+      <h3>Key Checklist</h3>
+      <table>
+        <tbody>
+          <tr><td>✅</td><td>Change <code class="inline-code">SECRET_KEY</code> to a cryptographically random 64-char string</td></tr>
+          <tr><td>✅</td><td>Use PostgreSQL — not SQLite — in production</td></tr>
+          <tr><td>✅</td><td>Set <code class="inline-code">USE_LOCAL_STORAGE=false</code> and configure Azure Blob Storage</td></tr>
+          <tr><td>✅</td><td>Remove all demo seed data and demo user accounts</td></tr>
+          <tr><td>✅</td><td>Terminate TLS at load balancer — never expose FastAPI on port 443</td></tr>
+          <tr><td>✅</td><td>Store secrets in Azure Key Vault with Key Vault references</td></tr>
+          <tr><td>✅</td><td>Enable automated PostgreSQL backups (7-day minimum retention)</td></tr>
+          <tr><td>✅</td><td>Use <code class="inline-code">--workers 1</code> with gunicorn (APScheduler runs in-process)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <strong>AICTE Integrated Institution Complaint Monitoring Dashboard</strong><br/>
+  Smart India Hackathon 2024 · Problem Statement 26264<br/>
+  © All India Council for Technical Education · अखिल भारतीय तकनीकी शिक्षा परिषद्
+</footer>
+
+</body>
+</html>

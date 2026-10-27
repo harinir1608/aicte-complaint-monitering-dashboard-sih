@@ -1,0 +1,69 @@
+version: "3.9"
+
+networks:
+  aicte-network:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aicte_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: aicte_db
+      POSTGRES_USER: aicte_user
+      POSTGRES_PASSWORD: aicte_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aicte-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aicte_user -d aicte_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aicte_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - local_storage:/app/local_storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aicte-network
+    environment:
+      DATABASE_URL: postgresql://aicte_user:aicte_pass@postgres:5432/aicte_db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: aicte_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - aicte-network
+
+volumes:
+  postgres_data:
+  local_storage:
